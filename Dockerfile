@@ -1,6 +1,6 @@
 # Build stage
-FROM golang:1.24-alpine AS builder
-
+FROM golang:1.23-alpine AS builder
+# FROM registry.redhat.io/ubi9/go-toolset:latest AS builder
 # Set working directory
 WORKDIR /app
 
@@ -17,7 +17,9 @@ COPY *.go ./
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o api .
 
 # Final stage with RHEL 9 UBI minimal
-FROM registry.access.redhat.com/ubi9/ubi-minimal:latest
+#FROM registry.access.redhat.com/ubi9/ubi-minimal:latest
+FROM ubuntu:latest
+#FROM alpine:latest
 
 # Set working directory
 WORKDIR /app
@@ -26,14 +28,17 @@ WORKDIR /app
 COPY --from=builder /app/api .
 
 # Create a non-root user for running the application
-RUN microdnf install -y shadow-utils && \
-    groupadd -r appuser && \
+# RUN microdnf install -y shadow-utils && \
+#     groupadd -r appuser && \
+#     useradd -r -g appuser -s /sbin/nologin appuser && \
+#     chown -R appuser:appuser /app && \
+#     microdnf clean all
+RUN groupadd -r appuser && \
     useradd -r -g appuser -s /sbin/nologin appuser && \
-    chown -R appuser:appuser /app && \
-    microdnf clean all
+    chown -R 1001:1001 /app
 
 # Switch to non-root user
-USER appuser
+USER 1001
 
 # Expose the port the app runs on
 EXPOSE 8080
