@@ -33,9 +33,8 @@ COPY --from=builder /app/api .
 #     useradd -r -g appuser -s /sbin/nologin appuser && \
 #     chown -R appuser:appuser /app && \
 #     microdnf clean all
-RUN groupadd -r appuser && \
-    useradd -r -g appuser -s /sbin/nologin appuser && \
-    chown -R 1001:1001 /app
+
+RUN chown -R 1001:1001 /app
 
 # Switch to non-root user
 USER 1001
