@@ -1,5 +1,5 @@
 # Build stage
-FROM golang:1.23-alpine AS builder
+FROM docker.io/golang:1.23-alpine AS builder
 # FROM registry.redhat.io/ubi9/go-toolset:latest AS builder
 # Set working directory
 WORKDIR /app
@@ -18,7 +18,7 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o api 
 
 # Final stage with RHEL 9 UBI minimal
 #FROM registry.access.redhat.com/ubi9/ubi-minimal:latest
-FROM ubuntu:latest
+FROM docker.io/ubuntu:latest
 #FROM alpine:latest
 
 # Set working directory
