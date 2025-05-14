@@ -17,8 +17,8 @@ COPY *.go ./
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o api .
 
 # Final stage with RHEL 9 UBI minimal
-#FROM registry.access.redhat.com/ubi9/ubi-minimal:latest
-FROM docker.io/ubuntu:latest
+FROM registry.access.redhat.com/ubi9/ubi-minimal:latest
+#FROM docker.io/ubuntu:latest
 #FROM alpine:latest
 
 # Set working directory
@@ -49,3 +49,5 @@ ENV PORT="8080"
 
 # Run the API
 CMD ["./api"]
+
+# podman build --platform linux/amd64 -f ./Dockerfile -t quay.io/voravitl/simple-rest-go:latest .
