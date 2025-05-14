@@ -180,13 +180,15 @@ func AccessLogMiddleware(next http.HandlerFunc) http.HandlerFunc {
 		duration := time.Since(requestStart)
 
 		// Log the request details
-		accessLogger.Printf("%s - \"%s %s %s\" %d %s - %s",
+		accessLogger.Printf("%s - \"%s %s %s\" %d User-Agent: %s X-Forwarded-For: %s X-B3-TraceId: %s - %s",
 			r.RemoteAddr,
 			r.Method,
 			r.URL.Path,
 			r.Proto,
 			rw.statusCode,
 			r.Header.Get("User-Agent"),
+			r.Header.Get("X-Forwarded-For"),
+			r.Header.Get("X-B3-TraceId"),
 			duration,
 		)
 
