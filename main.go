@@ -189,7 +189,7 @@ func AccessLogMiddleware(next http.HandlerFunc) http.HandlerFunc {
 			r.Header.Get("User-Agent"),
 			r.Header.Get("X-Forwarded-For"),
 			r.Header.Get("X-B3-TraceId"),
-			r.Header.Get("X-B3-SpanId"),
+			r.Header.Get("X-B3-ParentSpanId"),
 			duration,
 		)
 
