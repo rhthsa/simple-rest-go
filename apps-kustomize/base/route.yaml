@@ -1,0 +1,26 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: simple-rest-go
+  labels:
+    app: simple-rest-go
+    app.kubernetes.io/component: simple-rest-go
+    app.kubernetes.io/instance: simple-rest-go
+    app.kubernetes.io/name: simple-rest-go
+    app.kubernetes.io/part-of: simple-rest-go
+  annotations:
+    app.openshift.io/vcs-ref: ''
+    app.openshift.io/vcs-uri: 'https://github.com/rhthsa/simple-rest-go.git'
+    openshift.io/generated-by: OpenShiftWebConsole
+    openshift.io/host.generated: 'true'
+spec:
+  to:
+    kind: Service
+    name: simple-rest-go
+    weight: 100
+  port:
+    targetPort: 8080-tcp
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  wildcardPolicy: None

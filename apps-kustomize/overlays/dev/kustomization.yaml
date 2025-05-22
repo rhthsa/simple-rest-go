@@ -1,1 +1,8 @@
-
+commonLabels:
+  environment: dev
+commonAnnotations:
+  description: This is dev environment
+bases:
+- ../../base
+patchesStrategicMerge:
+- deployment.yaml

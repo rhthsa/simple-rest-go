@@ -1,0 +1,25 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: simple-rest-go
+  labels:
+    app: simple-rest-go
+    app.kubernetes.io/component: simple-rest-go
+    app.kubernetes.io/instance: simple-rest-go
+    app.kubernetes.io/name: simple-rest-go
+    app.kubernetes.io/part-of: simple-rest-go
+  annotations:
+    app.openshift.io/vcs-ref: ''
+    app.openshift.io/vcs-uri: 'https://github.com/rhthsa/simple-rest-go.git'
+    openshift.io/generated-by: OpenShiftWebConsole
+spec:
+  ports:
+    - name: 8080-tcp
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  internalTrafficPolicy: Cluster
+  type: ClusterIP
+  selector:
+    app: simple-rest-go
+    deployment: simple-rest-go

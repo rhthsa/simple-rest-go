@@ -1,1 +1,8 @@
-
+commonLabels:
+  environment: prod
+commonAnnotations:
+  description: This is produciton environment
+bases:
+- ../../base
+patchesStrategicMerge:
+- deployment.yaml
