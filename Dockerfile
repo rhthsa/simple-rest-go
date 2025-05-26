@@ -17,7 +17,7 @@ COPY *.go ./
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o api .
 
 # Final stage with RHEL 9 UBI minimal
-FROM registry.access.redhat.com/ubi9/ubi-minimal:latest
+FROM registry.access.redhat.com/ubi9/ubi-micro:latest
 #FROM docker.io/ubuntu:latest
 #FROM alpine:latest
 
