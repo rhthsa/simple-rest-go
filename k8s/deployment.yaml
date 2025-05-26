@@ -21,14 +21,14 @@ spec:
     spec:
       containers:
         - name: simple-rest-go
-          image: 'quay.io/voravitl/simple-rest-go:go-1.23'
+          image: 'quay.io/voravitl/simple-rest-go:go-latest'
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
               protocol: TCP
           resources: {}
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
-          imagePullPolicy: Always
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
       dnsPolicy: ClusterFirst
