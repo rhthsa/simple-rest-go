@@ -1,70 +1,59 @@
 schemaVersion: 2.2.0
 metadata:
-  name: go-api-dev
-  displayName: Go API Application
-  description: A Devfile for developing and running a Go API application.
-  tags:
-    - Go
-    - REST API
-  icon: https://raw.githubusercontent.com/devfile/devfile.github.io/master/assets/images/logo.svg
-attributes:
-  # This attribute hints to tools like OpenShift Dev Spaces what kind of project this is
-  # to offer relevant commands/components.
-  appSetup:
+  name: simple-rest-go
+  version: 1.0.0
+  description: Go application built using a Devfile
+
+components:
+  - name: go-runtime
     container:
-      name: go-env
-      image: docker.io/golang:1.23-alpine
-      ports:
-        - name: http-api
-          containerPort: 8080
+      image: golang:1.23-alpine
+      command: ["/bin/sh"]
+      args: ["-c", "while true; do sleep 10000; done"]
+      mountSources: true
+      workingDir: /app
+      memoryLimit: 512Mi
+      cpuLimit: 500m
+
+  - name: ubi-runtime
+    container:
+      image: registry.access.redhat.com/ubi9/ubi-micro:latest
+      mountSources: true
+      workingDir: /app
+      memoryLimit: 256Mi
+      cpuLimit: 300m
 
 commands:
-  - id: install-dependencies
+  - id: install-deps
     exec:
-      component: go-env
-      commandLine: "if [ -f go.sum ]; then go mod download; else go mod tidy; fi"
+      component: go-runtime
+      commandLine: |
+        if [ -f go.sum ]; then go mod download; else go mod tidy; fi
       workingDir: /app
       group:
         kind: build
-        is ); then go mod download; else go mod tidy; fi"
-      workingDir: /app
-      group:
-        kind: build
-        isDefault: false # This will be part of the build flow
+        isDefault: true
 
-  - id: build-api
+  - id: build-app
     exec:
-      component: go-env
-      commandLine: "CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o api ."
+      component: go-runtime
+      commandLine: |
+        CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o api .
       workingDir: /app
       group:
         kind: build
-        isDefault: true # This will be the default build command
+        isDefault: true
 
-  - id: run-api
+  - id: run-app
     exec:
-      component: go-env
-      commandLine: "./api"
+      component: go-runtime
+      commandLine: ./api
       workingDir: /app
       group:
         kind: run
-        isDefault: true # This will be the default run command
-      env:
-        - name: VERSION
-          value: "1.0.0"
-        - name: BACKEND
-          value: "http://localhost:8080/version"
-        - name: PORT
-          value: "8080"
-      
-components:
-  - name: go-env
-    container:
-      image: docker.io/golang:1.23-alpine # Using the same base image as your builder stage
-      memoryLimit: 1024Mi # Adjust as needed
-      cpuLimit: 1 # Adjust as needed
-      mountSources: true # Mounts your project's source code into the container
-      ports:
-        - name: http-api
-          containerPort: 8080
-          protocol: tcp
+        isDefault: true
+
+events:
+  postStart:
+    - install-deps
+    - build-app
