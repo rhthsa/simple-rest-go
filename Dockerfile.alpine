@@ -47,4 +47,4 @@ ENV PORT="8080"
 # Run the API
 CMD ["./api"]
 
-# podman build --platform linux/amd64 -f ./Dockerfile.apline -t quay.io/voravitl/simple-rest-go:apline .
+# podman build --platform linux/amd64 -f ./Dockerfile.apline -t quay.io/voravitl/simple-rest-go:alpine .
